@@ -10,6 +10,8 @@ License:        Proprietory
 URL:            https://github.com/smallorange
 Source0:        %{url}/ipu6-camera-bins/releases/download/%{version}/ipu6-camera-bins-%{version}.tar.xz
 Source1:        %{url}/ivsc-firmware/releases/download/%{version}/ivsc-firmware-%{version}.tar.xz
+Source2:        ld-so-conf-d-ipu6.conf
+Source3:        ld-so-conf-d-ipu6ep.conf
 
 BuildRequires:  systemd-rpm-macros
 # For kmod package
@@ -18,7 +20,7 @@ Provides:       %{name} = %{version}-%{release}
 BuildArch:      x86_64
 
 %description
-This provides the necessary firmwares for Intel IPU6, including IPU6 itself
+This provides the necessary binaries for Intel IPU6, including IPU6 itself
 and iVSC.
 
 This package contains the binary firmware for %{name}.
@@ -80,6 +82,10 @@ install -D -m 0644 ipu6-camera-bins-%{version}/ipu6ep/lib/libia_mkn.so %{buildro
 install -D -m 0644 ipu6-camera-bins-%{version}/ipu6ep/lib/libia_nvm.so %{buildroot}%{_libdir}/ipu6ep/libia_nvm.so
 install -D -m 0644 ipu6-camera-bins-%{version}/ipu6ep/lib/libia_p2p_ipu6ep.a %{buildroot}%{_libdir}/ipu6ep/libia_p2p_ipu6ep.a
 install -D -m 0644 ipu6-camera-bins-%{version}/ipu6ep/lib/libipu6ep.a %{buildroot}%{_libdir}/ipu6ep/libipu6ep.a
+
+#install ld config
+install -D -m 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/ld.so.conf.d/ipu6.conf
+install -D -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/ld.so.conf.d/ipu6ep.conf
 
 
 # IPU6 firmwares
@@ -156,6 +162,10 @@ install -D -m 0644 ivsc-firmware-%{version}/firmware/ivsc_skucfg_himx11b1_0_1.bi
 %{_libdir}/ipu6ep/libia_nvm.so
 %{_libdir}/ipu6ep/libia_p2p_ipu6ep.a
 %{_libdir}/ipu6ep/libipu6ep.a
+
+# ld config file
+%{_sysconfdir}/ld.so.conf.d/ipu6.conf
+%{_sysconfdir}/ld.so.conf.d/ipu6ep.conf
 
 %package firmware
 Summary: IPU6 firmware
