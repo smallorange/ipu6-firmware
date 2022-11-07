@@ -17,11 +17,14 @@ BuildRequires:  systemd-rpm-macros
 # For kmod package
 Provides:       %{name} = %{version}-%{release}
 
-BuildArch:      x86_64
+Requires:       intel-ipu6-kmod = 0.0.1-3.%{release}
+
+ExclusiveArch:  x86_64
 
 %description
 This provides the necessary binaries for Intel IPU6, including IPU6 itself
-and iVSC.
+and iVSC. The library includes necessary image processing algorithms and
+3A algorithm for the camera.
 
 This package contains the binary firmware for %{name}.
 
@@ -29,7 +32,6 @@ This package contains the binary firmware for %{name}.
 
 %setup -q -c -a 1
 
-echo "xxx"
 cp ivsc-firmware-%{version}/LICENSE ./
 
 %build
@@ -171,8 +173,7 @@ install -D -m 0644 ivsc-firmware-%{version}/firmware/ivsc_skucfg_himx11b1_0_1.bi
 Summary: IPU6 firmware
 
 %description firmware
-This provides the necessary firmwares for Intel IPU6, including IPU6 itself
-and iVSC.
+This provides the necessary firmwares for Intel IPU6, including IPU6 and iVSC.
 
 This package contains the binary firmware for %{name}.
 
