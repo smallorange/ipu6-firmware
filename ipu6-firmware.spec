@@ -17,7 +17,7 @@ BuildRequires:  systemd-rpm-macros
 # For kmod package
 Provides:       %{name} = %{version}-%{release}
 
-Requires:       intel-ipu6-kmod = 0.0.1-3.%{release}
+Requires:       intel-ipu6-kmod-common >= 0.0.1-2
 
 ExclusiveArch:  x86_64
 
@@ -171,6 +171,8 @@ install -D -m 0644 ivsc-firmware-%{version}/firmware/ivsc_skucfg_himx11b1_0_1.bi
 
 %package firmware
 Summary: IPU6 firmware
+
+Requires:       intel-ipu6-kmod-common >= 0.0.1-2
 
 %description firmware
 This provides the necessary firmwares for Intel IPU6, including IPU6 and iVSC.
