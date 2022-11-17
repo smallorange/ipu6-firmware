@@ -21,11 +21,9 @@ Provides:       intel-ipu6-kmod-common = %{version}
 ExclusiveArch:  x86_64
 
 %description
-This provides the necessary binaries for Intel IPU6, including IPU6 itself
-and iVSC. The library includes necessary image processing algorithms and
-3A algorithm for the camera.
-
-This package contains the binary firmware for %{name}.
+This provides the necessary binaries for Intel IPU6, including library and firmware.
+The library includes necessary image processing algorithms and 3A algorithm for the
+camera.
 
 %package firmware
 Summary: IPU6 firmware
@@ -35,8 +33,6 @@ Requires:         %{name} = %{version}-%{release}
 
 %description firmware
 This provides the necessary firmwares for Intel IPU6.
-
-This package contains the binary firmware for %{name}.
 
 %package devel
 Summary: IPU6 header files for development.
@@ -51,7 +47,6 @@ Requires:         %{name} = %{version}-%{release}
 %prep
 
 %setup -q -c
-ls -l
 cp %{name}-%{commit}/LICENSE ./
 cd %{name}-%{commit}
 for i in ipu6 ipu6ep; do
