@@ -15,7 +15,6 @@ Source0: https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommi
 BuildRequires:  systemd-rpm-macros
 BuildRequires:  chrpath
 # For kmod package
-Provides:       %{name} = %{version}-%{release}
 Provides:       intel-ipu6-kmod-common = %{version}
 
 ExclusiveArch:  x86_64
@@ -26,18 +25,16 @@ firmware. The library includes necessary image processing algorithms and
 3A algorithm for the camera.
 
 %package firmware
-Summary:          IPU6 firmware
+Summary:        IPU6 firmware
 
 %description firmware
 This provides the necessary firmware for Intel IPU6.
 
 %package devel
-Summary:          IPU6 header files for development.
+Summary:        IPU6 header files for development.
 
 %description devel
 This provides the necessary header files for IPU6 development.
-
-Provides:         %{name}-devel = %{version}-%{release}
 
 %prep
 
@@ -96,7 +93,7 @@ install -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/lib/firm
 - Small tweaks as a result of pkg-review (rf#6474), including
   setup macro parameters, path settings, and dependency settings.
 
-* Tue Nov 17 2022 Kate Hsuan <hpa@redhat.com> - 0.0-1.20221112git4694ba7
+* Thu Nov 17 2022 Kate Hsuan <hpa@redhat.com> - 0.0-1.20221112git4694ba7
 - Revision is based on the pkg-review (rf#6474#c2).
 
 * Tue Oct 25 2022 Kate Hsuan <hpa@redhat.com> - 0.0.1
