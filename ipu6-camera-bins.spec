@@ -7,17 +7,19 @@
 Name:           ipu6-camera-bins
 Summary:        Binary library for Intel IPU6
 Version:        0.0
-Release:        2.%{commitdate}git%{shortcommit}%{?dist}
+Release:        3.%{commitdate}git%{shortcommit}%{?dist}
 License:        Proprietary
 
 Source0: https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 
 BuildRequires:  systemd-rpm-macros
 BuildRequires:  chrpath
-# For kmod package
-Provides:       intel-ipu6-kmod-common = %{version}
+BuildRequires:  patchelf
 
 ExclusiveArch:  x86_64
+
+# For kmod package
+Provides:       intel-ipu6-kmod-common = %{version}
 
 %description
 This provides the necessary binaries for Intel IPU6, including library and
@@ -56,6 +58,7 @@ for i in ipu6 ipu6ep; do
   mkdir -p %{buildroot}%{_libdir}/$i
   cp -pr $i/include/* %{buildroot}%{_includedir}/$i/
   cp -pr $i/lib/lib* $i/lib/pkgconfig %{buildroot}%{_libdir}/$i
+  patchelf --set-rpath %{_libdir}/$i %{buildroot}%{_libdir}/$i/*.so
   sed -i \
     -e "s|libdir=/usr/lib|libdir=%{_libdir}|g" \
     -e "s|libdir}|libdir}/$i|g" \
@@ -89,6 +92,10 @@ install -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/lib/firm
 
 
 %changelog
+* Mon Dec 5 2022 Kate Hsuan <hpa@redhat.com> - 0.0-3.20221112git4694ba7
+- Set correct rpath for every .so files and put the ExclusiveArch to the
+  suitable place.
+
 * Tue Nov 22 2022 Kate Hsuan <hpa@redhat.com> - 0.0-2.20221112git4694ba7
 - Small tweaks as a result of pkg-review (rf#6474), including
   setup macro parameters, path settings, and dependency settings.
