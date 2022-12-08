@@ -7,7 +7,7 @@
 Name:           ipu6-camera-bins
 Summary:        Binary library for Intel IPU6
 Version:        0.0
-Release:        3.%{commitdate}git%{shortcommit}%{?dist}
+Release:        4.%{commitdate}git%{shortcommit}%{?dist}
 License:        Proprietary
 
 Source0: https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
@@ -35,6 +35,8 @@ This provides the necessary firmware for Intel IPU6.
 %package devel
 Summary:        IPU6 header files for development.
 
+Requires: %{name}%{?_isa} = %{version}-%{release}
+
 %description devel
 This provides the necessary header files for IPU6 development.
 
@@ -50,10 +52,6 @@ done
 
 %install
 for i in ipu6 ipu6ep; do
-  mkdir -p %{buildroot}%{_libdir}/$i
-  cp -pr $i/lib/lib* %{buildroot}%{_libdir}/$i
-done
-for i in ipu6 ipu6ep; do
   mkdir -p %{buildroot}%{_includedir}/$i
   mkdir -p %{buildroot}%{_libdir}/$i
   cp -pr $i/include/* %{buildroot}%{_includedir}/$i/
@@ -67,31 +65,45 @@ for i in ipu6 ipu6ep; do
 done
 
 # IPU6 firmwares
-install -D -m 0644 ipu6/lib/firmware/intel/ipu6_fw.bin %{buildroot}/lib/firmware/intel/ipu6_fw.bin
-install -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/lib/firmware/intel/ipu6ep_fw.bin
+install -p -D -m 0644 ipu6/lib/firmware/intel/ipu6_fw.bin %{buildroot}/usr/lib/firmware/intel/ipu6_fw.bin
+install -p -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/usr/lib/firmware/intel/ipu6ep_fw.bin
 
 %files
 %license LICENSE
 %dir %{_libdir}/ipu6
-%{_libdir}/ipu6/*.so*
-%{_libdir}/ipu6/*.a
 %dir %{_libdir}/ipu6ep
+%{_libdir}/ipu6/*.so*
 %{_libdir}/ipu6ep/*.so*
-%{_libdir}/ipu6ep/*.a
 
 %files firmware
 %license LICENSE
-/lib/firmware/intel/ipu6_fw.bin
-/lib/firmware/intel/ipu6ep_fw.bin
+%dir /usr/lib/firmware
+%dir /usr/lib/firmware/intel
+/usr/lib/firmware/intel/ipu6_fw.bin
+/usr/lib/firmware/intel/ipu6ep_fw.bin
 
 %files devel
-%{_includedir}/ipu6
-%{_includedir}/ipu6ep
-%{_libdir}/ipu6/pkgconfig/
-%{_libdir}/ipu6ep/pkgconfig/
+%dir %{_includedir}/ipu6
+%dir %{_includedir}/ipu6ep
+%dir %{_libdir}/ipu6
+%dir %{_libdir}/ipu6ep
+%dir %{_libdir}/ipu6/pkgconfig
+%dir %{_libdir}/ipu6ep/pkgconfig
+%{_includedir}/ipu6/*
+%{_includedir}/ipu6ep/*
+%{_libdir}/ipu6/pkgconfig/*
+%{_libdir}/ipu6ep/pkgconfig/*
+%{_libdir}/ipu6/*.a
+%{_libdir}/ipu6ep/*.a
 
 
 %changelog
+* Thu Dec 8 2022 Kate Hsuan <hpa@redhat.com> - 0.0-4.20221112git4694ba7
+- Add Requires to make sure version lock between main and -devel package.
+  Move .a files to -devel package.
+  Fix dir settings.
+  Remove unnecessary for loop and duplicated commands.
+
 * Mon Dec 5 2022 Kate Hsuan <hpa@redhat.com> - 0.0-3.20221112git4694ba7
 - Set correct rpath for every .so files and put the ExclusiveArch to the
   suitable place.
