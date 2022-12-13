@@ -7,7 +7,7 @@
 Name:           ipu6-camera-bins
 Summary:        Binary library for Intel IPU6
 Version:        0.0
-Release:        4.%{commitdate}git%{shortcommit}%{?dist}
+Release:        5.%{commitdate}git%{shortcommit}%{?dist}
 License:        Proprietary
 
 Source0: https://github.com/intel/%{name}/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
@@ -34,8 +34,7 @@ This provides the necessary firmware for Intel IPU6.
 
 %package devel
 Summary:        IPU6 header files for development.
-
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 This provides the necessary header files for IPU6 development.
@@ -85,8 +84,6 @@ install -p -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/usr/l
 %files devel
 %dir %{_includedir}/ipu6
 %dir %{_includedir}/ipu6ep
-%dir %{_libdir}/ipu6
-%dir %{_libdir}/ipu6ep
 %dir %{_libdir}/ipu6/pkgconfig
 %dir %{_libdir}/ipu6ep/pkgconfig
 %{_includedir}/ipu6/*
@@ -98,6 +95,10 @@ install -p -D -m 0644 ipu6ep/lib/firmware/intel/ipu6ep_fw.bin %{buildroot}/usr/l
 
 
 %changelog
+* Tue Dec 13 2022 Kate Hsuan <hpa@redhat.com> - 0.0-5.20221112git4694ba7
+- Fix indentation.
+- Remove unnecessary dir macro.
+
 * Thu Dec 8 2022 Kate Hsuan <hpa@redhat.com> - 0.0-4.20221112git4694ba7
 - Add Requires to make sure version lock between main and -devel package.
   Move .a files to -devel package.
